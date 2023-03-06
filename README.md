@@ -1,1 +1,1 @@
-# CouncilHousePlatform
+# Council House Platform Python Backend
