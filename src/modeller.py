@@ -5,6 +5,7 @@ import pandas as pd
 from applications import Applications
 from property import Property
 
+import boto3
 
 def resolveApplication():
     availableProperties = Property.getAllProperties()
@@ -156,6 +157,21 @@ class Modeller:
     def displayCurrentDate(self):
         print("The current date is:", self.currentDate)
 
+    def saveToDynamoDB(self):
+        data = []
+        with open('data.csv', mode='r') as csv_file:
+            reader = csv.DictReader(csv_file)
+            for row in reader:
+                data.append(row)
+
+        dynamodb = boto3.resource('dynamodb')
+        table = dynamodb.Table('ModellerCSV')
+
+        with table.batch_writer() as batch:
+            for item in data: 
+                batch.put_item(Item=item)
+
 
 if __name__ == "__main__":
     modeller = Modeller(startDate=datetime.date(2022, 1, 1), endDate=datetime.date(2022, 12, 31))
+    modeller.saveToDynamoDB()
