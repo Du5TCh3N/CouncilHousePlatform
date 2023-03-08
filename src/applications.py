@@ -92,7 +92,7 @@ class Applications:
                 Category = "PanelMoves"
             else:
                 Category = "Other"
-            BedroomSize = int(row.get('Bedroom', 1))
+            BedroomSize = int(row.get('Bedroom', 1) or 1)
             StartDate = row['BandStartDate']
             cls(ID, Band, Category, BedroomSize, StartDate)
 

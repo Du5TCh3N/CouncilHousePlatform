@@ -7,6 +7,15 @@ from property import Property
 
 import boto3
 
+dynamodb = boto3.resource('dynamodb', region_name='eu-west-2')
+table = dynamodb.Table('rbkhousingtable')
+
+response = table.scan()
+items = response['Items']
+
+rbkHousing = pd.DataFrame(items)
+rbkHousing.dropna(inplace=True)
+
 def resolveApplication():
     availableProperties = Property.getAllProperties()
     resolvedCounter = 0
@@ -53,7 +62,8 @@ class Modeller:
         self.propertyReleaseType = propertyReleaseType
 
         self.housing_stock = pd.read_excel("../data/HRA_stock.xlsx", engine="openpyxl")
-        self.housing_register = pd.read_excel("../data/RBK_Housing_Register.xlsx", engine="openpyxl")
+        # self.housing_register = pd.read_excel("../data/RBK_Housing_Register.xlsx", engine="openpyxl")
+        self.housing_register = rbkHousing
 
         Applications.from_dataframe(self.housing_register)
 
@@ -174,4 +184,5 @@ class Modeller:
 
 if __name__ == "__main__":
     modeller = Modeller(startDate=datetime.date(2022, 1, 1), endDate=datetime.date(2022, 12, 31))
-    modeller.saveToDynamoDB()
+    # modeller.saveToDynamoDB()
+    print(rbkHousing)
