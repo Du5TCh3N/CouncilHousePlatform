@@ -11,7 +11,7 @@ class Applications:
         self.Band = Band
         self.Category = Category
         self.BedroomSize = BedroomSize
-        self.StartDate = StartDate
+        self.StartDate = datetime.datetime.strptime(StartDate, '%Y-%m-%d %H:%M:%S')
         self.WaitTime = 0
         Applications.instances.append(self)
 
@@ -93,8 +93,12 @@ class Applications:
             else:
                 Category = "Other"
             BedroomSize = int(row.get('Bedroom', 1) or 1)
-            StartDate = row['BandStartDate']
-            cls(ID, Band, Category, BedroomSize, StartDate)
+            StartDateRaw = row['BandStartDate'][:19]
+            # print(StartDateRaw)
+            StartDate = datetime.datetime.strptime(StartDateRaw, '%Y-%m-%d %H:%M:%S').date()
+            StartDate_str = StartDate.strftime('%Y-%m-%d %H:%M:%S')
+            cls(ID, Band, Category, BedroomSize, StartDate_str)
+
 
     @classmethod
     def getApplicationsBySizeAndCategory(cls, BedroomSize, Category):
