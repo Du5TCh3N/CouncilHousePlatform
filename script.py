@@ -7,10 +7,7 @@ import os
 from modeller import Modeller
 
 def hello_world(request):
-    name = os.environ.get('NAME')
-    if name == None or len(name) == 0:
-        name = "world"
-    message = "Hello, " + name + "!\n"
+    message = "Hello, Fahim" + "!\n"
     return Response(message)
 
 def run_modeller(request):
