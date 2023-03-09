@@ -181,6 +181,7 @@ class Modeller:
             for item in data: 
                 batch.put_item(Item=item)
 
+from wsgiref.simple_server import make_server
 
 if __name__ == "__main__":
     modeller = Modeller(startDate=datetime.date(2022, 1, 1), endDate=datetime.date(2022, 12, 31))
