@@ -7,6 +7,7 @@ import os
 from modeller import Modeller
 
 def hello_world(request):
+    modeller = Modeller(startDate=datetime.date(2022, 1, 1), endDate=datetime.date(2022, 12, 31))
     message = "Hello, Fahim" + "!\n"
     return Response(message)
 
